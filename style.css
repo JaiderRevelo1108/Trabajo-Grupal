@@ -1,0 +1,286 @@
+/* =========================================================
+   TOKENS — tema "libro contable"
+   ========================================================= */
+:root{
+  --paper:      #F1EDE3;
+  --paper-dark: #E7E1D0;
+  --ink:        #1F3B32;
+  --ink-soft:   #4A6359;
+  --gold:       #B8892B;
+  --brick:      #A23E38;
+  --leaf:       #3F6B4F;
+  --line:       #C9C2AE;
+  --line-soft:  #DAD4C2;
+  --white:      #FBFAF6;
+
+  --font-display: "Fraunces", serif;
+  --font-body:    "Inter", sans-serif;
+  --font-mono:    "JetBrains Mono", monospace;
+
+  --radius: 3px;
+}
+
+*{ box-sizing:border-box; }
+
+body{
+  margin:0;
+  background:var(--paper-dark);
+  color:var(--ink);
+  font-family:var(--font-body);
+  font-size:15px;
+  -webkit-font-smoothing:antialiased;
+}
+
+.mono{ font-family:var(--font-mono); }
+
+/* =========================================================
+   LAYOUT
+   ========================================================= */
+.app{
+  display:grid;
+  grid-template-columns:260px 1fr;
+  min-height:100vh;
+}
+
+/* ---------- SIDEBAR / TALÓN ---------- */
+.stub{
+  background:var(--ink);
+  color:var(--paper);
+  padding:32px 24px;
+  display:flex;
+  flex-direction:column;
+  position:relative;
+}
+.stub::after{
+  content:"";
+  position:absolute; top:0; right:0; bottom:0;
+  width:1px;
+  background-image:linear-gradient(to bottom, transparent 0, transparent 6px, rgba(241,237,227,.35) 6px, rgba(241,237,227,.35) 12px);
+  background-size:1px 12px;
+}
+.stub__brand{ display:flex; align-items:flex-start; gap:10px; margin-bottom:36px; }
+.stub__mark{ font-family:var(--font-display); font-size:30px; color:var(--gold); line-height:1; }
+.stub__title{ font-family:var(--font-display); font-size:19px; font-weight:600; margin:0 0 2px; }
+.stub__sub{ font-size:12px; color:var(--paper-dark); opacity:.65; margin:0; }
+
+.stub__nav{ display:flex; flex-direction:column; gap:4px; margin-bottom:auto; }
+.navbtn{
+  text-align:left;
+  background:none; border:none;
+  color:var(--paper);
+  opacity:.6;
+  font-family:var(--font-body);
+  font-size:14px;
+  padding:10px 12px;
+  border-radius:var(--radius);
+  cursor:pointer;
+  transition:opacity .15s, background .15s;
+}
+.navbtn:hover{ opacity:1; background:rgba(251,250,246,.06); }
+.navbtn.is-active{ opacity:1; background:rgba(184,137,43,.16); color:var(--gold); font-weight:600; }
+
+.stub__stats{ margin-top:32px; padding-top:20px; border-top:1px dashed rgba(241,237,227,.3); display:flex; flex-direction:column; gap:12px; }
+.statline{ display:flex; justify-content:space-between; align-items:baseline; font-size:12px; opacity:.85; }
+.statline strong{ font-family:var(--font-mono); font-size:14px; color:var(--gold); }
+
+.stub__foot{ margin-top:24px; font-size:11px; opacity:.55; line-height:1.6; }
+.stub__foot .mono{ font-size:15px; opacity:1; color:var(--paper); }
+
+/* ---------- HOJA PRINCIPAL ---------- */
+.sheet{
+  background:var(--paper);
+  padding:44px 56px 80px;
+  background-image:repeating-linear-gradient(
+    to bottom, transparent, transparent 37px, var(--line-soft) 38px
+  );
+  background-position:0 120px;
+}
+
+.view{ display:none; max-width:920px; }
+.view.is-active{ display:block; }
+
+.sheet__head{ display:flex; justify-content:space-between; align-items:flex-end; gap:20px; flex-wrap:wrap; }
+.eyebrow{ text-transform:uppercase; letter-spacing:.09em; font-size:11px; color:var(--ink-soft); margin:0 0 4px; }
+.sheet__head h2{ font-family:var(--font-display); font-size:30px; margin:0; font-weight:600; }
+.sheet__headright{ display:flex; gap:16px; }
+
+.rule{ height:2px; background:var(--ink); margin:18px 0 28px; opacity:.85; }
+
+/* =========================================================
+   CAMPOS / FORMULARIOS
+   ========================================================= */
+.grid2{ display:grid; grid-template-columns:1fr 1fr; gap:18px 24px; margin-bottom:20px; }
+.field{ display:flex; flex-direction:column; gap:6px; font-size:12px; color:var(--ink-soft); }
+.field--full{ grid-column:1 / -1; }
+.field--inline{ min-width:150px; }
+.field span{ text-transform:uppercase; letter-spacing:.06em; font-weight:600; }
+
+input, select{
+  font-family:var(--font-body);
+  font-size:14px;
+  color:var(--ink);
+  background:var(--white);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:9px 11px;
+}
+input:focus, select:focus{
+  outline:2px solid var(--gold);
+  outline-offset:1px;
+  border-color:var(--gold);
+}
+
+/* =========================================================
+   TABLA ESTILO LIBRO CONTABLE
+   ========================================================= */
+.ledger{ width:100%; border-collapse:collapse; margin-top:8px; }
+.ledger thead th{
+  text-align:left;
+  font-size:11px;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  color:var(--ink-soft);
+  border-bottom:2px solid var(--ink);
+  padding:8px 10px;
+}
+.ledger td{ padding:8px 10px; border-bottom:1px solid var(--line); vertical-align:middle; }
+.ledger tbody tr:hover{ background:rgba(184,137,43,.06); }
+.col-qty, .col-price, .col-total{ width:110px; }
+.col-del{ width:32px; }
+.ledger input{ width:100%; border:none; background:transparent; padding:4px 2px; }
+.ledger input:focus{ outline:none; border-bottom:1px solid var(--gold); }
+.rowtotal{ font-family:var(--font-mono); text-align:right; padding-right:6px; }
+.rowdel{ background:none; border:none; color:var(--brick); cursor:pointer; font-size:16px; opacity:.55; }
+.rowdel:hover{ opacity:1; }
+
+.ledger--registry td{ font-size:14px; }
+
+/* =========================================================
+   TOTALES
+   ========================================================= */
+.totals{ max-width:320px; margin:24px 0 0 auto; display:flex; flex-direction:column; gap:8px; }
+.totals__row{ display:flex; align-items:center; justify-content:flex-end; gap:8px; font-size:14px; }
+.totals__row span:first-child{ margin-right:auto; color:var(--ink-soft); }
+.taxinput{ width:52px; text-align:right; padding:4px 6px; }
+.totals__row--big{ font-size:19px; font-weight:600; border-top:2px solid var(--ink); padding-top:10px; margin-top:4px; }
+.totals__row--big .mono{ color:var(--leaf); }
+
+/* =========================================================
+   BOTONES
+   ========================================================= */
+.btn{
+  font-family:var(--font-body);
+  font-size:13px;
+  font-weight:600;
+  letter-spacing:.02em;
+  padding:11px 20px;
+  border-radius:var(--radius);
+  border:1px solid transparent;
+  cursor:pointer;
+  transition:transform .1s, opacity .15s;
+}
+.btn:active{ transform:translateY(1px); }
+.btn--primary{ background:var(--ink); color:var(--paper); }
+.btn--primary:hover{ opacity:.88; }
+.btn--ghost{ background:transparent; border-color:var(--ink); color:var(--ink); }
+.btn--ghost:hover{ background:rgba(31,59,50,.06); }
+
+.actions{ display:flex; gap:12px; margin-top:28px; }
+
+/* =========================================================
+   BÚSQUEDA / VACÍO
+   ========================================================= */
+.search{ min-width:240px; }
+.empty{ color:var(--ink-soft); font-size:13px; font-style:italic; padding:20px 0; }
+
+/* =========================================================
+   BADGES DE ESTADO (sello)
+   ========================================================= */
+.badge{
+  display:inline-block;
+  font-family:var(--font-mono);
+  font-size:11px;
+  text-transform:uppercase;
+  letter-spacing:.05em;
+  padding:3px 10px;
+  border:1.5px solid currentColor;
+  border-radius:2px;
+  transform:rotate(-2deg);
+}
+.badge--pending{ color:var(--gold); }
+.badge--paid{ color:var(--leaf); }
+.badge--overdue{ color:var(--brick); }
+
+.iconbtn{ background:none; border:none; cursor:pointer; font-size:13px; color:var(--ink-soft); text-decoration:underline; }
+.iconbtn:hover{ color:var(--ink); }
+
+/* =========================================================
+   MODAL / DOCUMENTO DE FACTURA
+   ========================================================= */
+.modal{
+  position:fixed; inset:0;
+  background:rgba(31,59,50,.55);
+  display:none;
+  align-items:flex-start;
+  justify-content:center;
+  padding:40px 20px;
+  overflow:auto;
+  z-index:50;
+}
+.modal.is-open{ display:flex; }
+.modal__card{
+  background:var(--white);
+  max-width:680px; width:100%;
+  border-radius:6px;
+  padding:40px;
+  position:relative;
+  box-shadow:0 20px 60px rgba(0,0,0,.3);
+}
+.modal__close{
+  position:absolute; top:14px; right:16px;
+  background:none; border:none; font-size:24px;
+  color:var(--ink-soft); cursor:pointer;
+}
+.modal__actions{ display:flex; gap:12px; margin-top:32px; justify-content:flex-end; }
+
+.invoice-doc h3{ font-family:var(--font-display); font-size:26px; margin:0 0 4px; }
+.invoice-doc .idoc-meta{ color:var(--ink-soft); font-size:13px; margin-bottom:24px; }
+.invoice-doc table{ width:100%; border-collapse:collapse; margin:18px 0; }
+.invoice-doc th{ text-align:left; font-size:11px; text-transform:uppercase; color:var(--ink-soft); border-bottom:2px solid var(--ink); padding:6px 4px; }
+.invoice-doc td{ padding:8px 4px; border-bottom:1px solid var(--line); font-size:14px; }
+.idoc-grid{ display:flex; justify-content:space-between; gap:24px; margin-bottom:20px; font-size:13px; }
+.idoc-grid strong{ display:block; font-family:var(--font-display); font-size:15px; margin-bottom:2px; }
+.idoc-totals{ max-width:260px; margin-left:auto; text-align:right; }
+.idoc-totals .row{ display:flex; justify-content:space-between; font-size:13px; padding:4px 0; }
+.idoc-totals .grand{ font-size:20px; font-weight:600; border-top:2px solid var(--ink); margin-top:6px; padding-top:8px; color:var(--leaf); }
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+@media (max-width:840px){
+  .app{ grid-template-columns:1fr; }
+  .stub{ flex-direction:row; flex-wrap:wrap; align-items:center; gap:20px; padding:20px; }
+  .stub__nav{ flex-direction:row; flex-wrap:wrap; margin-bottom:0; }
+  .stub__stats, .stub__foot{ display:none; }
+  .sheet{ padding:28px 20px 60px; }
+  .grid2{ grid-template-columns:1fr; }
+}
+
+/* =========================================================
+   IMPRESIÓN
+   ========================================================= */
+@media print{
+  body *{ visibility:hidden; }
+  #printArea, #printArea *{ visibility:visible; }
+  #printArea{
+    position:absolute; top:0; left:0; width:100%;
+    box-shadow:none; padding:0;
+  }
+  .no-print{ display:none !important; }
+}
+
+/* focus visibility for accessibility */
+button:focus-visible, .navbtn:focus-visible{
+  outline:2px solid var(--gold);
+  outline-offset:2px;
+}
