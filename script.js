@@ -160,14 +160,14 @@ function renderItems(){
       <td class="rowtotal mono">${fmt(item.qty*item.price)}</td>
       <td><button class="rowdel" title="Eliminar línea">&times;</button></td>`;
 
-    tr.querySelectorAll('input').forEach(inp=>{
-      inp.addEventListener('input', ()=>{
-        const field = inp.dataset.field;
-        item[field] = field==='desc' ? inp.value : Number(inp.value)||0;
-        tr.querySelector('.rowtotal').textContent = fmt(item.qty*item.price);
-        updateTotals();
-      });
-    });
+  tr.querySelectorAll('input').forEach(inp=>{
+  inp.addEventListener('input', ()=>{
+    const field = inp.dataset.field;
+    item[field] = field==='desc' ? inp.value : Number(inp.value)||0;
+    tr.querySelector('.rowtotal').textContent = fmt(item.qty*item.price);
+    updateTotals();
+  });
+});
     tr.querySelector('.rowdel').addEventListener('click', ()=>{
       currentItems = currentItems.filter(x=>x.id!==item.id);
       if(currentItems.length===0) addItem(); else renderItems();
