@@ -34,5 +34,5 @@ Solo abre `index.html` en tu navegador. No requiere servidor ni instalación.
 
 ## Notas
 
-- Los datos (clientes, facturas, configuración) se guardan **solo en el navegador en el que se usa** vía `localStorage`. Si necesitas que varias personas compartan la misma información, este proyecto tendría que conectarse a una base de datos (por ejemplo Firebase, Supabase o un backend propio) — puedo ayudarte a extenderlo si lo necesitas.
+- Los datos (clientes, facturas, configuración) se guardan **solo en el navegador en el que se usa** vía `localStorage`. Si necesitas que varias personas compartan la misma información, este proyecto tendría que conectarse a una base de datos (por ejemplo Firebase, Supabase o un backend propio) — puedo ayudarte a extenderlo si lo necesitas .
 
